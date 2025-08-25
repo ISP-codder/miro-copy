@@ -28,6 +28,8 @@ getAllBoards:
 
 createBoard:
   summary: Create a new board
+  security:
+    - bearerAuth: []
   requestBody:
     required: true
     content:
