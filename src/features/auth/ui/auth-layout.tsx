@@ -1,0 +1,40 @@
+import { ROUTES } from "@/shared/model/routes";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/shared/ui/kit/card";
+import { Link } from "react-router";
+
+export default function AuthLayout({
+  form,
+  title,
+  description,
+  footerText,
+}: {
+  form: React.ReactNode;
+  title: React.ReactNode;
+  description: React.ReactNode;
+  footerText: React.ReactNode;
+}) {
+  return (
+    <main className="grow flex flex-col pt-[200px] items-center ">
+      <Card className="w-full max-w-[400px]">
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </CardHeader>
+        <CardContent>{form}</CardContent>
+        <CardFooter>
+          <p className="text-sm text-muted-foreground [&_a]:underline [&_a]:text-primary ">
+            Нет аккаунта?
+            {footerText}
+          </p>
+        </CardFooter>
+      </Card>
+    </main>
+  );
+}
