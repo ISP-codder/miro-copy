@@ -10,7 +10,9 @@ function LoginPage() {
       description="Введите ваш email и пароль для входа в систему"
       footerText={
         <>
-          Нет аккаунта? <Link to={ROUTES.REGISTER}>Зарегистрироваться</Link>
+          <Link className="p-5" to={ROUTES.REGISTER}>
+            Зарегистрироваться
+          </Link>
         </>
       }
       form={<LoginForm />}
