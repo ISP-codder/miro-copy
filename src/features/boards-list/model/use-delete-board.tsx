@@ -1,9 +1,7 @@
 import { rqClient } from "@/shared/api/instance";
 import { useQueryClient } from "@tanstack/react-query";
-import React from "react";
-import { string } from "zod";
 
-export default function useDeleteBoard() {
+export function useDeleteBoard() {
   const queryClient = useQueryClient();
   const deleteBoardMutation = rqClient.useMutation(
     "delete",
@@ -16,6 +14,7 @@ export default function useDeleteBoard() {
       },
     },
   );
+
   return {
     deleteBoard: (boardId: string) =>
       deleteBoardMutation.mutate({

@@ -30,7 +30,6 @@ export default function AuthLayout({
         <CardContent>{form}</CardContent>
         <CardFooter>
           <p className="text-sm text-muted-foreground [&_a]:underline [&_a]:text-primary ">
-            Нет аккаунта?
             {footerText}
           </p>
         </CardFooter>

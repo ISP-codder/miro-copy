@@ -1,14 +1,15 @@
 import { rqClient } from "@/shared/api/instance";
-import { useCallback, RefCallback } from "react";
+import { keepPreviousData } from "@tanstack/query-core";
+import { RefCallback, useCallback } from "react";
 
 type UseBoardsListParams = {
   limit?: number;
   isFavorite?: boolean;
   search?: string;
-  sort?: "createdAt" | "updatedAt" | "lasetOpenedAt" | "name";
+  sort?: "createdAt" | "updatedAt" | "lastOpenedAt" | "name";
 };
 
-export default function useBoardsList({
+export function useBoardsList({
   limit = 20,
   isFavorite,
   search,
@@ -32,14 +33,12 @@ export default function useBoardsList({
       {
         initialPageParam: 1,
         pageParamName: "page",
-        getNextPageParam: (
-          lastPage: { totalPages: number },
-          _: unknown,
-          lastPageParams: number,
-        ) =>
+        getNextPageParam: (lastPage, _, lastPageParams) =>
           Number(lastPageParams) < lastPage.totalPages
             ? Number(lastPageParams) + 1
             : null,
+
+        placeholderData: keepPreviousData,
       },
     );
 
@@ -65,13 +64,13 @@ export default function useBoardsList({
     [fetchNextPage],
   );
 
-  const boards = data?.pages.flatMap((page) => page.list ?? []);
+  const boards = data?.pages.flatMap((page) => page.list) ?? [];
 
   return {
     boards,
-    cursorRef,
     isFetchingNextPage,
     isPending,
     hasNextPage,
+    cursorRef,
   };
 }
