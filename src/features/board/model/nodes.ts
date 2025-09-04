@@ -15,7 +15,7 @@ type StickerNode = NodeBase & {
 type Node = StickerNode;
 
 export function useNodes() {
-  const [nodes] = useState<Node[]>([
+  const [nodes, setNodes] = useState<Node[]>([
     {
       id: "1",
       type: "sticker",
@@ -33,16 +33,24 @@ export function useNodes() {
   ]);
 
   const addSticker = (data: { text: string; x: number; y: number }) => {
-    nodes.push({
-      id: crypto.randomUUID(),
-      type: "sticker",
-      ...data,
-    });
+    setNodes((lastNodes) => [
+      ...lastNodes,
+      {
+        id: crypto.randomUUID(),
+        type: "sticker",
+        ...data,
+      },
+    ]);
+  };
+
+  const deleteNodes = (ids: string[]) => {
+    setNodes((lastNodes) => lastNodes.filter((node) => !ids.includes(node.id)));
   };
 
   return {
     nodes,
     addSticker,
+    deleteNodes,
   };
 }
 
