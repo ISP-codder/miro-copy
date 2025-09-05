@@ -37,16 +37,7 @@ function BoardPage() {
           onMouseUp={viewModel.overlay?.onMouseUp}
         />
         {viewModel.nodes.map((node) => (
-          <Sticker
-            id={node.id}
-            key={node.id}
-            text={node.text}
-            x={node.x}
-            y={node.y}
-            selected={node.isSelected}
-            onClick={node.onClick}
-            ref={nodeRef}
-          />
+          <Sticker key={node.id} {...node} ref={nodeRef} />
         ))}
       </Canvas>
       {viewModel.selectionWindow && (
