@@ -25,29 +25,7 @@ export function useGoToEditSticker(params: ViewModelParams) {
     };
   };
 
-  const handleKeyDown = (
-    idleState: IdleViewState,
-    e: React.KeyboardEvent<HTMLDivElement>,
-  ) => {
-    if (
-      !e.shiftKey &&
-      !e.altKey &&
-      !e.metaKey &&
-      !e.ctrlKey &&
-      idleState.selectedIds.size === 1
-    ) {
-      const [id] = idleState.selectedIds.values();
-      setViewState(goToEditSticker(id));
-      return { preventNext: true };
-    }
-
-    return {
-      preventNext: false,
-    };
-  };
-
   return {
     handleNodeClick,
-    handleKeyDown,
   };
 }
