@@ -1,6 +1,6 @@
 import type { ViewModelParams } from "../view-model-params";
 import type { ViewModel } from "../view-model-type";
-import { goToIdle } from "./idle";
+import { goToIdle } from "./idle/index";
 
 export type EditStickerViewState = {
   type: "edit-sticker";

@@ -2,7 +2,7 @@ import {
   useAddStickerViewModel,
   type AddStickerViewState,
 } from "./variants/add-sticker";
-import { useIdleViewModel, type IdleViewState } from "./variants/idle";
+import { useIdleViewModel, type IdleViewState } from "./variants/idle/index";
 import type { ViewModel } from "./view-model-type";
 import type { ViewModelParams } from "./view-model-params";
 import { useState } from "react";

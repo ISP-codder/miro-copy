@@ -9,7 +9,7 @@ import { pointOnScreenToCanvas } from "../../domain/screen-to-canvas";
 import { selectItems } from "../../domain/selection";
 import type { ViewModelParams } from "../view-model-params";
 import type { ViewModel } from "../view-model-type";
-import { goToIdle } from "./idle";
+import { goToIdle } from "./idle/index";
 
 export type SelectionWindowViewState = {
   type: "selection-window";
