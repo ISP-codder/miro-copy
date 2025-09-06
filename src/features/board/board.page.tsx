@@ -29,9 +29,12 @@ function BoardPage() {
 
   useWindowEvents(viewModel);
 
+  const windowPosition =
+    viewModel.windowPosition ?? windowPositionModel.position;
+
   return (
     <Layout ref={focusLayoutRef} onKeyDown={viewModel.layout?.onKeyDown}>
-      <Dots />
+      <Dots windowPosition={windowPosition} />
 
       <Canvas
         ref={canvasRef}
@@ -43,9 +46,7 @@ function BoardPage() {
           />
         }
         onClick={viewModel.canvas?.onClick}
-        windowPosition={
-          viewModel.windowPosition ?? windowPositionModel.position
-        }
+        windowPosition={windowPosition}
       >
         {viewModel.nodes.map((node) => (
           <Sticker key={node.id} {...node} ref={nodeRef} />
