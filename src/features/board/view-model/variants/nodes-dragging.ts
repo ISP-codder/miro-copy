@@ -41,11 +41,21 @@ export function useNodesDraggingViewModel({
           };
         }
 
-        return {
-          ...node,
-          ...addPoints(node, diff),
-          isSelected: true,
-        };
+        if (node.type === "sticker") {
+          return {
+            ...node,
+            ...addPoints(node, diff),
+            isSelected: true,
+          };
+        }
+        if (node.type === "drawing") {
+          // Move all points of the drawing by the same offset
+          return {
+            ...node,
+            points: node.points.map((point) => addPoints(point, diff)),
+            isSelected: true,
+          };
+        }
       }
 
       return node;
@@ -90,15 +100,26 @@ export function useNodesDraggingViewModel({
                 ];
               }
 
-              return [
-                {
-                  id: node.id,
-                  point: {
-                    x: node.x,
-                    y: node.y,
+              if (node.type === "sticker") {
+                return [
+                  {
+                    id: node.id,
+                    point: {
+                      x: node.x,
+                      y: node.y,
+                    },
                   },
-                },
-              ];
+                ];
+              }
+              if (node.type === "drawing") {
+                // For drawings, we need to update all points
+                return node.points.map((point, index) => ({
+                  id: node.id,
+                  point,
+                  pointIndex: index,
+                }));
+              }
+              return [];
             });
 
           nodesModel.updateNodesPositions(nodesToMove);

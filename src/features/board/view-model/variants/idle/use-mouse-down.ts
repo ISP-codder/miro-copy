@@ -33,7 +33,7 @@ export function useMouseDown({
   const handleNodeMouseDown = (
     idleState: IdleViewState,
     nodeId: string,
-    e: React.MouseEvent<HTMLButtonElement>,
+    e: React.MouseEvent,
   ) => {
     const point = pointOnScreenToCanvas(
       {

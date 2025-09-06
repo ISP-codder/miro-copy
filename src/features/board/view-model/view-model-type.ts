@@ -28,7 +28,20 @@ type ViewModelArrowNode = {
   onMouseUp?: (e: React.MouseEvent<SVGPathElement>) => void;
 };
 
-type ViewModeNode = ViewModelStickerNode | ViewModelArrowNode;
+export type ViewModelDrawingNode = {
+  id: string;
+  type: "drawing";
+  points: Point[];
+  isSelected?: boolean;
+  onClick?: (e: React.MouseEvent<SVGPathElement>) => void;
+  onMouseDown?: (e: React.MouseEvent<SVGPathElement>) => void;
+  onMouseUp?: (e: React.MouseEvent<SVGPathElement>) => void;
+};
+
+type ViewModeNode =
+  | ViewModelStickerNode
+  | ViewModelArrowNode
+  | ViewModelDrawingNode;
 
 export type ViewModel = {
   nodes: ViewModeNode[];
@@ -43,6 +56,7 @@ export type ViewModel = {
   overlay?: {
     onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
     onMouseDown?: (e: React.MouseEvent<HTMLDivElement>) => void;
+    onMouseMove?: (e: React.MouseEvent<HTMLDivElement>) => void;
     onMouseUp?: (e: React.MouseEvent<HTMLDivElement>) => void;
   };
   window?: {
@@ -53,6 +67,7 @@ export type ViewModel = {
   actions?: {
     addSticker?: ViewModelAction;
     addArrow?: ViewModelAction;
+    draw?: ViewModelAction;
   };
 };
 export type ViewModelAction = {

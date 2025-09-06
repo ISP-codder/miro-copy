@@ -31,13 +31,33 @@ export function useSelectionWindowViewModel({
 
     return nodesModel.nodes.map((node) => {
       const nodeDimensions = nodesDimensions[node.id];
-      const nodeRect =
-        node.type === "sticker"
-          ? createRectFromDimensions(node, nodeDimensions)
-          : createRectFromPoints(
-              resolveRelativePoint(relativeBase, node.start),
-              resolveRelativePoint(relativeBase, node.end),
-            );
+      let nodeRect: Rect;
+      if (node.type === "sticker") {
+        nodeRect = createRectFromDimensions(node, nodeDimensions);
+      } else if (node.type === "arrow") {
+        nodeRect = createRectFromPoints(
+          resolveRelativePoint(relativeBase, node.start),
+          resolveRelativePoint(relativeBase, node.end),
+        );
+      } else if (node.type === "drawing") {
+        // For drawing nodes, create a minimal rect around the points
+        if (node.points.length === 0) {
+          nodeRect = { x: 0, y: 0, width: 0, height: 0 };
+        } else {
+          const minX = Math.min(...node.points.map((p) => p.x));
+          const minY = Math.min(...node.points.map((p) => p.y));
+          const maxX = Math.max(...node.points.map((p) => p.x));
+          const maxY = Math.max(...node.points.map((p) => p.y));
+          nodeRect = {
+            x: minX,
+            y: minY,
+            width: maxX - minX,
+            height: maxY - minY,
+          };
+        }
+      } else {
+        nodeRect = { x: 0, y: 0, width: 0, height: 0 };
+      }
 
       return {
         ...node,

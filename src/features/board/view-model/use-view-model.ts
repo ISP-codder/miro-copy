@@ -36,12 +36,14 @@ import {
   type DrawArrowViewState,
   useDrawArrowViewModel,
 } from "./variants/draw-arrow";
+import { type DrawViewState, useDrawViewModel } from "./variants/draw";
 import { useResolveRelativeStaticDecorator } from "./decorator/resolve-relative";
 
 export type ViewState =
   | AddArrowViewState
   | AddStickerViewState
   | DrawArrowViewState
+  | DrawViewState
   | EditStickerViewState
   | IdleViewState
   | SelectionWindowViewState
@@ -58,6 +60,7 @@ export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
 
   const addArrowViewModel = useAddArrowViewModel(newParams);
   const drawArrowViewModel = useDrawArrowViewModel(newParams);
+  const drawViewModel = useDrawViewModel(newParams);
   const addStickerViewModel = useAddStickerViewModel(newParams);
   const editStickerViewModel = useEditStickerViewModel(newParams);
   const idleViewModel = useIdleViewModel(newParams);
@@ -88,6 +91,11 @@ export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
     }
     case "draw-arrow": {
       viewModel = drawArrowViewModel(viewState);
+      break;
+    }
+    case "draw": {
+      viewModel = drawViewModel(viewState);
+      viewModel = commonActionsDecorator(viewModel);
       break;
     }
     case "edit-sticker": {

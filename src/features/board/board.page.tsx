@@ -1,4 +1,4 @@
-import { ArrowRightIcon, StickerIcon } from "lucide-react";
+import { ArrowRightIcon, StickerIcon, PencilIcon } from "lucide-react";
 
 import { useNodes } from "./model/nodes";
 import { useCanvasRect } from "./hooks/use-canvas-rect";
@@ -16,6 +16,10 @@ import { ActionButton } from "./ui/action-button";
 import { useNodesDimensions } from "./hooks/use-nodes-dimensions";
 import { useWindowPositionModel } from "./model/window-position";
 import { Arrow } from "./ui/nodes/arrow";
+import { Drawing } from "./ui/nodes/drawing";
+import { Tutorial } from "./ui/tutorial";
+import { TutorialButton } from "./ui/tutorial-button";
+import { useTutorial, tutorialSteps } from "./hooks/use-tutorial";
 
 function BoardPage() {
   const nodesModel = useNodes();
@@ -30,6 +34,15 @@ function BoardPage() {
     nodesDimensions,
     windowPositionModel,
   });
+
+  const {
+    showTutorial,
+    currentStep,
+    handleNext,
+    handleSkip,
+    handleClose,
+    resetTutorial,
+  } = useTutorial();
 
   useWindowEvents(viewModel);
 
@@ -46,6 +59,7 @@ function BoardPage() {
           <Overlay
             onClick={viewModel.overlay?.onClick}
             onMouseDown={viewModel.overlay?.onMouseDown}
+            onMouseMove={viewModel.overlay?.onMouseMove}
             onMouseUp={viewModel.overlay?.onMouseUp}
           />
         }
@@ -59,6 +73,9 @@ function BoardPage() {
           if (node.type === "arrow") {
             return <Arrow key={node.id} {...node} ref={nodeRef} />;
           }
+          if (node.type === "drawing") {
+            return <Drawing key={node.id} {...node} ref={nodeRef} />;
+          }
         })}
         {viewModel.selectionWindow && (
           <SelectionWindow {...viewModel.selectionWindow} />
@@ -67,18 +84,38 @@ function BoardPage() {
 
       <Actions>
         <ActionButton
+          data-tutorial="sticker-button"
           isActive={viewModel.actions?.addSticker?.isActive}
           onClick={viewModel.actions?.addSticker?.onClick}
         >
           <StickerIcon />
         </ActionButton>
         <ActionButton
+          data-tutorial="arrow-button"
           isActive={viewModel.actions?.addArrow?.isActive}
           onClick={viewModel.actions?.addArrow?.onClick}
         >
           <ArrowRightIcon />
         </ActionButton>
+        <ActionButton
+          data-tutorial="draw-button"
+          isActive={viewModel.actions?.draw?.isActive}
+          onClick={viewModel.actions?.draw?.onClick}
+        >
+          <PencilIcon />
+        </ActionButton>
       </Actions>
+
+      <Tutorial
+        steps={tutorialSteps}
+        currentStep={currentStep}
+        onNext={handleNext}
+        onSkip={handleSkip}
+        onClose={handleClose}
+        showTutorial={showTutorial}
+      />
+
+      {!showTutorial && <TutorialButton onShowTutorial={resetTutorial} />}
     </Layout>
   );
 }

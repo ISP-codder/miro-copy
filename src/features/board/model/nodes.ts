@@ -19,7 +19,12 @@ type ArrowNode = NodeBase & {
   end: Point;
 };
 
-export type Node = StickerNode | ArrowNode;
+type DrawingNode = NodeBase & {
+  type: "drawing";
+  points: Point[];
+};
+
+export type Node = StickerNode | ArrowNode | DrawingNode;
 
 export function useNodes() {
   const [nodes, setNodes] = useState<Node[]>([
@@ -63,6 +68,13 @@ export function useNodes() {
     ]);
   };
 
+  const addDrawing = (data: { points: Point[] }) => {
+    setNodes((lastNodes) => [
+      ...lastNodes,
+      { ...data, id: crypto.randomUUID(), type: "drawing" },
+    ]);
+  };
+
   const updateStickerText = (id: string, text: string) => {
     setNodes((lastNodes) =>
       lastNodes.map((node) => (node.id === id ? { ...node, text } : node)),
@@ -95,6 +107,7 @@ export function useNodes() {
       id: string;
       point: Point;
       type?: "start" | "end";
+      pointIndex?: number;
     }[],
   ) => {
     const record = Object.fromEntries(
@@ -119,6 +132,24 @@ export function useNodes() {
             return { ...node, ...newPosition.point };
           }
         }
+        if (node.type === "drawing") {
+          // Update specific points of the drawing
+          const drawingUpdates = positions.filter(
+            (p) => p.id === node.id && p.pointIndex !== undefined,
+          );
+          if (drawingUpdates.length > 0) {
+            const newPoints = [...node.points];
+            drawingUpdates.forEach((update) => {
+              if (
+                update.pointIndex !== undefined &&
+                update.pointIndex < newPoints.length
+              ) {
+                newPoints[update.pointIndex] = update.point;
+              }
+            });
+            return { ...node, points: newPoints };
+          }
+        }
 
         return node;
       }),
@@ -129,6 +160,7 @@ export function useNodes() {
     nodes,
     addArrow,
     addSticker,
+    addDrawing,
     updateStickerText,
     updateNodesPositions,
     deleteNodes,
