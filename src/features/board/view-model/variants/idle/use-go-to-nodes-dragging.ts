@@ -7,14 +7,20 @@ import { goToNodesDragging } from "../nodes-dragging";
 export function useGoToNodesDragging({
   canvasRect,
   setViewState,
+  windowPositionModel,
 }: ViewModelParams) {
   const handleWindowMouseMove = (idleState: IdleViewState, e: MouseEvent) => {
-    if (idleState.mouseDown && idleState.mouseDown.type === "node") {
+    if (
+      idleState.mouseDown &&
+      idleState.mouseDown.type === "node" &&
+      !idleState.mouseDown.isRightClick
+    ) {
       const currentPoint = pointOnScreenToCanvas(
         {
           x: e.clientX,
           y: e.clientY,
         },
+        windowPositionModel.position,
         canvasRect,
       );
 
