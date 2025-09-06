@@ -22,6 +22,7 @@ type ViewModelArrowNode = {
   start: Point;
   end: Point;
   isSelected?: boolean;
+  noPointerEvents?: boolean;
   onClick?: (e: React.MouseEvent<SVGPathElement>) => void;
   onMouseDown?: (e: React.MouseEvent<SVGPathElement>) => void;
   onMouseUp?: (e: React.MouseEvent<SVGPathElement>) => void;

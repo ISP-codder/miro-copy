@@ -87,7 +87,6 @@ export function useViewModel(params: Omit<ViewModelParams, "setViewState">) {
       break;
     }
     case "draw-arrow": {
-      console.log("draw-arrow", viewState);
       viewModel = drawArrowViewModel(viewState);
       break;
     }
