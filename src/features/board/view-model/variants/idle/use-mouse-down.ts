@@ -9,7 +9,7 @@ export function useMouseDown({
 }: ViewModelParams) {
   const handleOverlayMouseDown = (
     idleState: IdleViewState,
-    e: React.MouseEvent<HTMLDivElement>,
+    e: React.MouseEvent,
   ) => {
     const point = pointOnScreenToCanvas(
       {

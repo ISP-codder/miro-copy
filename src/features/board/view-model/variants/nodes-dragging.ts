@@ -1,5 +1,11 @@
-import { vectorFromPoints, type Point } from "../../domain/point";
+import {
+  addPoints,
+  isRelativePoint,
+  type Point,
+  vectorFromPoints,
+} from "../../domain/point";
 import { pointOnScreenToCanvas } from "../../domain/screen-to-canvas";
+
 import type { ViewModelParams } from "../view-model-params";
 import type { ViewModel } from "../view-model-type";
 import { goToIdle } from "./idle";
@@ -17,22 +23,34 @@ export function useNodesDraggingViewModel({
   canvasRect,
   windowPositionModel,
 }: ViewModelParams) {
-  const getNodes = (state: NodesDraggingViewState) =>
-    nodesModel.nodes.map((node) => {
+  const getNodes = (state: NodesDraggingViewState) => {
+    return nodesModel.nodes.map((node) => {
       if (state.nodesToMove.has(node.id)) {
         const diff = vectorFromPoints(state.startPoint, state.endPoint);
 
+        if (node.type === "arrow") {
+          return {
+            ...node,
+            start: isRelativePoint(node.start)
+              ? node.start
+              : addPoints(node.start, diff),
+            end: isRelativePoint(node.end)
+              ? node.end
+              : addPoints(node.end, diff),
+            isSelected: true,
+          };
+        }
+
         return {
           ...node,
-          x: node.x + diff.x,
-          y: node.y + diff.y,
+          ...addPoints(node, diff),
           isSelected: true,
         };
       }
 
       return node;
     });
-
+  };
   return (state: NodesDraggingViewState): ViewModel => {
     const nodes = getNodes(state);
 
@@ -54,9 +72,34 @@ export function useNodesDraggingViewModel({
           });
         },
         onMouseUp: () => {
-          const nodesToMove = nodes.filter((node) =>
-            state.nodesToMove.has(node.id),
-          );
+          const nodesToMove = nodes
+            .filter((node) => state.nodesToMove.has(node.id))
+            .flatMap((node) => {
+              if (node.type === "arrow") {
+                return [
+                  {
+                    id: node.id,
+                    point: node.start,
+                    type: "start" as const,
+                  },
+                  {
+                    id: node.id,
+                    point: node.end,
+                    type: "end" as const,
+                  },
+                ];
+              }
+
+              return [
+                {
+                  id: node.id,
+                  point: {
+                    x: node.x,
+                    y: node.y,
+                  },
+                },
+              ];
+            });
 
           nodesModel.updateNodesPositions(nodesToMove);
 
