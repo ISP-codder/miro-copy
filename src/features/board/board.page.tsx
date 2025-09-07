@@ -87,6 +87,7 @@ function BoardPage() {
           data-tutorial="sticker-button"
           isActive={viewModel.actions?.addSticker?.isActive}
           onClick={viewModel.actions?.addSticker?.onClick}
+          hotkey="стикер"
         >
           <StickerIcon />
         </ActionButton>
@@ -94,6 +95,7 @@ function BoardPage() {
           data-tutorial="arrow-button"
           isActive={viewModel.actions?.addArrow?.isActive}
           onClick={viewModel.actions?.addArrow?.onClick}
+          hotkey="стрелка"
         >
           <ArrowRightIcon />
         </ActionButton>
@@ -101,6 +103,7 @@ function BoardPage() {
           data-tutorial="draw-button"
           isActive={viewModel.actions?.draw?.isActive}
           onClick={viewModel.actions?.draw?.onClick}
+          hotkey="карандаш"
         >
           <PencilIcon />
         </ActionButton>

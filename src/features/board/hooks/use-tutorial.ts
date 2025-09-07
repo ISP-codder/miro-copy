@@ -7,7 +7,6 @@ export function useTutorial() {
   const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
-    // Проверяем, показывали ли уже обучение
     const tutorialShown = localStorage.getItem(TUTORIAL_SHOWN_KEY);
     if (!tutorialShown) {
       setShowTutorial(true);

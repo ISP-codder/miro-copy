@@ -116,6 +116,14 @@ export function useDrawViewModel({
       actions: {
         draw: {
           isActive: true,
+          onClick: () => {
+            if (state.isDrawing) {
+              addDrawing(state);
+              setViewState(goToIdle());
+            } else {
+              setViewState(goToIdle());
+            }
+          },
         },
       },
     };

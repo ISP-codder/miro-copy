@@ -28,27 +28,8 @@ export type Node = StickerNode | ArrowNode | DrawingNode;
 
 export function useNodes() {
   const [nodes, setNodes] = useState<Node[]>([
-    {
-      id: "1",
-      type: "sticker",
-      text: "Hello 1",
-      x: 100,
-      y: 100,
-    },
-    {
-      id: "2",
-      type: "sticker",
-      text: "Hello 2",
-      x: 200,
-      y: 200,
-    },
-    {
-      id: "3",
-      type: "arrow",
-      start: { x: 10, y: 10, relativeTo: "1" },
-      end: { x: 20, y: 20, relativeTo: "2" },
-    },
-  ]);
+    
+]);
 
   const addSticker = (data: { text: string; x: number; y: number }) => {
     setNodes((lastNodes) => [
@@ -133,7 +114,6 @@ export function useNodes() {
           }
         }
         if (node.type === "drawing") {
-          // Update specific points of the drawing
           const drawingUpdates = positions.filter(
             (p) => p.id === node.id && p.pointIndex !== undefined,
           );

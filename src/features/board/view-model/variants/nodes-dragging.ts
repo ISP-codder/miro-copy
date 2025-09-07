@@ -49,7 +49,6 @@ export function useNodesDraggingViewModel({
           };
         }
         if (node.type === "drawing") {
-          // Move all points of the drawing by the same offset
           return {
             ...node,
             points: node.points.map((point) => addPoints(point, diff)),

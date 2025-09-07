@@ -31,7 +31,6 @@ export const AdvancedTutorial: React.FC<TutorialProps> = ({
   );
   const tutorialRef = useRef<HTMLDivElement>(null);
 
-  // Early return must be after all hooks
   if (!showTutorial || currentStep >= steps.length) {
     return null;
   }
@@ -53,7 +52,6 @@ export const AdvancedTutorial: React.FC<TutorialProps> = ({
   const getArrowStyle = () => {
     if (!highlightPosition || !tutorialRef.current) return {};
 
-    const tutorialRect = tutorialRef.current.getBoundingClientRect();
     const position = currentStepData.position || "top";
 
     switch (position) {
@@ -89,9 +87,7 @@ export const AdvancedTutorial: React.FC<TutorialProps> = ({
     <>
       {highlightPosition && (
         <div className="fixed inset-0 z-40">
-          {/* Highlight overlay */}
           <div className="absolute inset-0 bg-black/30">
-            {/* Highlight hole */}
             <div
               className="absolute rounded-lg border-2 border-yellow-400 bg-yellow-200/20 shadow-lg"
               style={{
@@ -103,7 +99,6 @@ export const AdvancedTutorial: React.FC<TutorialProps> = ({
             />
           </div>
 
-          {/* Arrow pointer */}
           <div
             className="absolute z-50 text-2xl text-yellow-400"
             style={getArrowStyle()}

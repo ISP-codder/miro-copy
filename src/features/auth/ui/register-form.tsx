@@ -1,7 +1,6 @@
 import { Button } from "@/shared/ui/kit/button";
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,

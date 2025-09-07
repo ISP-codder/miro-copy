@@ -7,7 +7,6 @@ import { goToIdle } from "../variants/idle";
 
 export function useCommonActionsDecorator({ setViewState }: ViewModelParams) {
   return (viewModel: ViewModel): ViewModel => {
-    // Проверяем, находимся ли мы уже в режиме рисования
     const isInDrawMode = viewModel.actions?.draw?.isActive === true;
 
     return {
@@ -43,7 +42,6 @@ export function useCommonActionsDecorator({ setViewState }: ViewModelParams) {
         draw: {
           isActive: isInDrawMode,
           onClick: () => {
-            // Если уже в режиме рисования - выходим, иначе входим
             if (isInDrawMode) {
               setViewState(goToIdle());
             } else {

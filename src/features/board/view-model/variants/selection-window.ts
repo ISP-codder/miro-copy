@@ -40,7 +40,6 @@ export function useSelectionWindowViewModel({
           resolveRelativePoint(relativeBase, node.end),
         );
       } else if (node.type === "drawing") {
-        // For drawing nodes, create a minimal rect around the points
         if (node.points.length === 0) {
           nodeRect = { x: 0, y: 0, width: 0, height: 0 };
         } else {
